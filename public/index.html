@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Femi Adeniran | ML Engineer & Artist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- All your existing styles remain unchanged -->
+    <style>
+        :root {
+            --primary-color: #4C5850;
+            --accent-color: #F0F4E8;
+            --text-color: #FFFFFF;
+            --secondary-text: rgba(255, 255, 255, 0.8);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --hover-bg: rgba(255, 255, 255, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: #121212;
+            overflow-x: hidden; /* Prevent horizontal scroll when sidebar is open */
+            transition: margin-right 0.3s ease; /* Add transition for smooth movement */
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: row;
+            transition: margin-right 0.3s ease, width 0.3s ease; /* Add transition for smooth movement */
+        }
+
+        .left-side {
+            flex: 1;
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://picsum.photos/800/1200') center center no-repeat;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .left-side::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(76, 88, 80, 0.4) 0%, rgba(18, 18, 18, 0.4) 100%);
+            z-index: 1;
+        }
+
+        .overlay-text {
+            position: relative;
+            z-index: 2;
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            letter-spacing: 2px;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1.2s forwards 0.5s;
+        }
+
+        .right-side {
+            flex: 1;
+            background-color: var(--primary-color);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .name-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-text);
+            margin-bottom: 40px;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.2s;
+        }
+
+        .bio {
+            font-size: 1rem;
+            line-height: 1.8;
+            max-width: 540px;
+            margin-bottom: 40px;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.4s;
+        }
+
+        .nav-links {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            margin-top: auto;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.6s;
+        }
+
+        .nav-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            color: var(--text-color);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .nav-link span {
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-link:hover span {
+            transform: translateX(5px);
+        }
+
+        .social-icons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 0.8s;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background: var(--hover-bg);
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .status-container {
+            margin-top: 40px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: none;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: fadeInUp 1s forwards 1s;
+        }
+
+        .status-title {
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+
+        .status-content {
+            font-size: 0.9rem;
+        }
+
+        .help-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transition: var(--transition);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .help-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modified sidebar styles for push behavior */
+        .ai-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px; /* Hidden by default */
+            width: 400px;
+            height: 100%;
+            background-color: var(--primary-color);
+            z-index: 1000;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* When sidebar is open, adjust body content */
+        body.sidebar-open {
+            margin-right: 400px; /* Move body content to make room for sidebar */
+        }
+
+        /* When sidebar is open, adjust main container */
+        body.sidebar-open .container {
+            width: calc(100%); /* Ensure container width accommodates sidebar */
+        }
+
+        .ai-sidebar.open {
+            right: 0; /* Slide in when open */
+        }
+
+        .ai-sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ai-sidebar-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+        }
+
+        .ai-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .ai-close-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .ai-input-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .ai-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border-radius: 6px 0 0 6px;
+            border: 1px solid var(--border-color);
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .ai-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .ai-submit-btn {
+            padding: 12px 20px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            transition: var(--transition);
+        }
+
+        .ai-submit-btn:hover {
+            background-color: #e0e4d8;
+        }
+
+        .ai-response-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .ai-response-container p {
+            margin-bottom: 15px;
+        }
+
+        .keyboard-help {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-side {
+                height: 30vh;
+            }
+            
+            .right-side {
+                padding: 30px 20px;
+            }
+            
+            .overlay-text {
+                font-size: 1.8rem;
+            }
+            
+            .name-title {
+                font-size: 1.5rem;
+            }
+
+            .ai-sidebar {
+                width: 100%;
+                right: -100%; /* Full width slide on mobile */
+            }
+            
+            body.sidebar-open {
+                margin-right: 0; /* Don't push on mobile */
+            }
+            
+            body.sidebar-open .container {
+                margin-right: 0;
+                width: 100%;
+                opacity: 0.3; /* Dim main content on mobile instead of pushing */
+                pointer-events: none; /* Disable interaction with main content when sidebar is open on mobile */
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        :focus {
+            outline: 2px solid var(--accent-color);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--text-color);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .message-user {
+            background-color: rgba(240, 244, 232, 0.1);
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .message-ai {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <div class="overlay-text">The Omen Abides.</div>
+        </div>
+        <div class="right-side">
+            <h1 class="name-title">Femi Adeniran</h1>
+            <div class="subtitle">Machine Learning Engineer & Artist</div>
+            <div class="bio">
+                I am Femi Adeniran, a machine learning engineer, technologist, futurist, and artist, driven by an insatiable curiosity to explore and experiment. My journey blends technology's precision with the boundless reach of art, delving into the foundations of thought. This blog is my canvas—Here, I bridge disciplines, bring abstract concepts to light, and chart paths through structured analysis and creative inquiry in the pursuit of the truth, insight and inspiration.
+            </div>
+            
+            <div class="status-container" id="statusContainer">
+                <div class="status-title">Currently stuck on:</div>
+                <div class="status-content" id="statusContent">
+                    I'm trying to understand how to effectively combine gradient boosting with neural networks for time series forecasting.
+                </div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link">
+                    My Blog
+                    <span>→</span>
+                </a>
+                <a href="#" class="nav-link">
+                    Photography
+                    <span>→</span>
+                </a>
+                <a href="#" class="nav-link">
+                    Experiments
+                    <span>→</span>
+                </a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="help-trigger" id="helpTrigger">Q</div>
+    
+    <div class="ai-sidebar" id="aiSidebar">
+        <div class="ai-sidebar-header">
+            <div class="ai-sidebar-title">AI Assistant</div>
+            <button class="ai-close-btn" id="aiCloseBtn">×</button>
+        </div>
+        <div class="ai-input-container">
+            <input type="text" class="ai-input" id="aiInput" placeholder="What are you stuck on?">
+            <button class="ai-submit-btn" id="aiSubmitBtn">Ask</button>
+        </div>
+        <div class="ai-response-container" id="aiResponseContainer">
+            <!-- AI responses will appear here -->
+        </div>
+        <div class="keyboard-help">
+            Press 'Q' to open, 'Esc' to close
+        </div>
+    </div>
+
+    <script>
+        // Environment variables
+        const API_URL = '/api/ai-assistant'; // This will be our backend endpoint
+
+        setTimeout(() => {
+            document.getElementById('statusContainer').style.display = 'block';
+        }, 2000);
+
+        const helpTrigger = document.getElementById('helpTrigger');
+        const aiSidebar = document.getElementById('aiSidebar');
+        const aiCloseBtn = document.getElementById('aiCloseBtn');
+        const aiInput = document.getElementById('aiInput');
+        const aiSubmitBtn = document.getElementById('aiSubmitBtn');
+        const aiResponseContainer = document.getElementById('aiResponseContainer');
+        const statusContent = document.getElementById('statusContent');
+
+        // Modified open sidebar function
+        function openAiSidebar() {
+            aiSidebar.classList.add('open');
+            document.body.classList.add('sidebar-open'); // Add class to body to trigger push effect
+            setTimeout(() => aiInput.focus(), 100);
+        }
+
+        // Modified close sidebar function
+        function closeAiSidebar() {
+            aiSidebar.classList.remove('open');
+            document.body.classList.remove('sidebar-open'); // Remove class from body
+        }
+
+        helpTrigger.addEventListener('click', () => {
+            openAiSidebar();
+        });
+
+        aiCloseBtn.addEventListener('click', () => {
+            closeAiSidebar();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'q' && !aiSidebar.classList.contains('open')) {
+                openAiSidebar();
+                e.preventDefault();
+            } else if (e.key === 'Escape' && aiSidebar.classList.contains('open')) {
+                closeAiSidebar();
+            }
+        });
+
+        aiSubmitBtn.addEventListener('click', handleAiRequest);
+        aiInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                handleAiRequest();
+            }
+        });
+
+        async function handleAiRequest() {
+            const query = aiInput.value.trim();
+            if (!query) return;
+
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = `
+                <div class="message-user"><strong>You:</strong> ${query}</div>
+                <div class="message-ai"><strong>AI:</strong> <span id="current-response">Thinking...</span></div>
+            `;
+            aiResponseContainer.appendChild(messageElement);
+
+            const responseSpan = messageElement.querySelector('#current-response');
+            aiResponseContainer.scrollTop = aiResponseContainer.scrollHeight;
+            aiInput.value = '';
+
+            try {
+                const pageText = document.body.innerText;
+                const pageUrl = window.location.href;
+                
+                // Modified to use our backend API endpoint instead of direct OpenAI call
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        pageContext: {
+                            text: pageText,
+                            url: pageUrl
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.statusText}`);
+                }
+
+                // If the backend supports streaming, use this code:
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder("utf-8");
+                let fullResponse = "";
+
+                statusContent.textContent = query;
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    fullResponse += chunk;
+                    responseSpan.textContent = fullResponse;
+                    aiResponseContainer.scrollTop = aiResponseContainer.scrollHeight;
+                }
+
+                // If the backend doesn't support streaming, use this simpler code instead:
+                // const data = await response.json();
+                // responseSpan.textContent = data.response;
+
+            } catch (error) {
+                console.error('Error calling API:', error);
+                responseSpan.textContent = "I'm having trouble connecting to my brain right now. Let me provide some general advice instead: " + getFallbackResponse(query);
+            }
+
+            aiResponseContainer.scrollTop = aiResponseContainer.scrollHeight;
+        }
+
+        function getFallbackResponse(query) {
+            const queryLower = query.toLowerCase();
+            if (queryLower.includes('gradient boosting') || queryLower.includes('neural network')) {
+                return "For combining gradient boosting with neural networks, consider using a stacking approach. First, train separate models, then use a meta-learner to combine their predictions. XGBoost handles tabular features while neural networks can process temporal patterns.";
+            } else if (queryLower.includes('time series')) {
+                return "For time series forecasting, try decomposing your problem into trend, seasonality, and residual components. LSTM or Transformer networks can capture long-term dependencies, while gradient boosting can handle non-linear relationships in feature engineering.";
+            } else if (queryLower.includes('stuck') || queryLower.includes('problem') || queryLower.includes('issue')) {
+                return "When you're stuck, try breaking down the problem into smaller components and solve each one separately. Visualize your data at each step and consider if you're using the right evaluation metrics for your specific time series problem.";
+            } else {
+                return "I'd recommend exploring research papers on hybrid models that combine tree-based methods with neural networks. The key is proper feature engineering and finding the right way to ensemble the predictions from both model types.";
+            }
+        }
+    </script>
+</body>
+</html>
